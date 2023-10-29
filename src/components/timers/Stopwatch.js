@@ -8,52 +8,129 @@ import Button from "../generic/Button";
 
 const Stopwatch = () =>  {
 	
+    const [displayMinutesCount, setDisplayMinutesCount] = useState('00' );
+    const [displaySecondsCount, setDisplaySecondsCount] = useState('00');
 
-    const [startTime, setStartTime] = useState('00:00'); 
+    const [startMinutes, setStartMinutes] = useState('00');
+    const [startSeconds, setStartSeconds] = useState('00');
+    
     const [counter, setCounter] = useState(0);
     
     const totalSeconds = useRef(0);
+    const secondsCountInterval = useRef(null);
 
 
-    const handleTimerInput = v => setStartTime(v);
+    // const handleMinutesInput = v => setStartMinutes(v);
+    // const handleSecondsInput = v => setStartSeconds(v);
+
+    const handleMinutesInput = (value) => {
+        setStartMinutes(value);
+        setDisplayMinutesCount('00');
+        setDisplaySecondsCount('00');
+        setCounter(0);
+    };
+
+    const handleSecondsInput = (value) => {
+        setStartSeconds(value);
+        setDisplayMinutesCount('00');
+        setDisplaySecondsCount('00');
+        setCounter(0);
+    };
 
     const handleStartButton = (value) => {
-        // Convert time input to seconds
-        let time = startTime.split(':');
-        let minutes = time[0];
-        let seconds = parseInt(minutes) * 60 + parseInt(time[1]);
+        // setDisplayMinutesCount('00');
+        // setDisplaySecondsCount('00');
+        // setCounter(0);
 
+        let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
+    
         totalSeconds.current = seconds;
-      
-        // Start timer 
-        const secondsCountInterval = setInterval(() => {
-            console.log(`totalseconds ${totalSeconds.current}`);
-            setCounter(prevCount => {
-                console.log(`prevCount ${prevCount}`);
-                return prevCount + 1
-            });
-        
-            console.log(`counter ${counter}`);
+    
+        if (totalSeconds.current > 0){
+        // Start timer
+            secondsCountInterval.current = setInterval(() => {
+                setCounter((prevTotalSecondsCount) => {
+                    const nextTotalSecondsCounter = prevTotalSecondsCount + 1;
+            
+                    if (nextTotalSecondsCounter === totalSeconds.current) {
+                        clearInterval(secondsCountInterval.current);
+                    }
 
-            if (counter === totalSeconds.current) {
-                clearInterval(secondsCountInterval);
-            } 
-        }, 1000);
-    };
+                    if (nextTotalSecondsCounter % 60 === 0){
+                       
+                        setDisplayMinutesCount((prevDisplayMinutesCount) => {
+                            let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) + 1;
+                            nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
+                            
+                            return nextDisplayMinutesCount;
+                        });
+                        setDisplaySecondsCount('00');
+
+                    }
+                    else{                    
+                        let nextTotalSeconds = nextTotalSecondsCounter % 60;
+                        setDisplaySecondsCount(nextTotalSeconds.toString().padStart(2,"0"));
+                        
+                    }
+                    return nextTotalSecondsCounter;
+                });
+            }, 1000);
+            
+        }
+      };
+
+
+      const handleStopButton = (value) => {
+        if (secondsCountInterval.current) {
+            clearInterval(secondsCountInterval.current);
+            secondsCountInterval.current = null;
+        }
+        else {
+            handleStartButton();
+        }
+      };
+
+      const handleResetButton = (value) => {
+        setDisplayMinutesCount('00');
+        setDisplaySecondsCount('00');
+        setStartMinutes('00');
+        setStartSeconds('00');
+        setCounter(0);
+        totalSeconds.current = 0;
+        if (secondsCountInterval.current) {
+            clearInterval(secondsCountInterval.current);
+            secondsCountInterval.current = null;
+        }
+      };
+
+      const handleEndButton = (value) => {
+        setDisplayMinutesCount(startMinutes);
+        setDisplaySecondsCount(startSeconds);
+        setCounter(totalSeconds.current);
+        if (secondsCountInterval.current) {
+            clearInterval(secondsCountInterval.current);
+            secondsCountInterval.current = null;
+        }
+      };
 
 	return (
         <div>
-
-            <TimerInput value={startTime} onChange={handleTimerInput}/>
+            <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
+            <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
             <div>
-                {startTime}
+                <div>
+                    Display
+                    {displayMinutesCount}:{displaySecondsCount}
+                </div>
+
                 <div>
                     Counter: {counter}
                 </div>
                 {/* COLOR DOES NOT WORK  */}
                 <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
-                <Button value={"Stop"} color={'#00cccc'} />   
-                <Button value={"Reset"} color={'#00cccc'} />                  
+                <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
+                <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
+                <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
             </div>
         </div>
 
