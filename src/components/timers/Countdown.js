@@ -21,27 +21,25 @@ const Countdown = ()=> {
     // const handleMinutesInput = v => setStartMinutes(v);
     const handleMinutesInput = v => {
         setStartMinutes(v);
-        // setDisplayMinutesCount(v);
-        // setCounter((parseInt(startMinutes * 60)) + parseInt(startSeconds));
+        setDisplayMinutesCount(v);
     };
     // const handleSecondsInput = v => setStartSeconds(v);
     const handleSecondsInput = v => {
         setStartSeconds(v);
-        // setDisplaySecondsCount(v);
-        // setCounter((parseInt(startMinutes * 60)) + parseInt(startSeconds));
+        setDisplaySecondsCount(v);
     };
 
     const handleStartButton = (value) => {
         
-
         let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
-        setCounter(seconds);
+        if (parseInt(displayMinutesCount) * 60 + parseInt(displaySecondsCount) === seconds){
+            setCounter(seconds);
+        }
     
         totalSeconds.current = seconds;
     
         if (totalSeconds.current > 0){
-            // if (displayMinutesCount > 0 && displaySecondsCount === 0){
-            if (displayMinutesCount > 0 ){
+            if (displayMinutesCount > 0 && displaySecondsCount === 0){
                 setDisplayMinutesCount((displayMinutesCount - 1).toString().padStart(2,"0"));
             }
         // Start timer
