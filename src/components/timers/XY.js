@@ -3,6 +3,8 @@ import { useState, useRef } from 'react';
 
 import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
+import DisplayTime from "../generic/DisplayTime";
+import DisplayRounds from "../generic/DisplayRounds";
 
 const XY = () => {
 
@@ -111,7 +113,7 @@ const handleStartButton = (value) => {
                 return nextTotalSecondsCounter;
             });
         
-        }, 100);
+        }, 1000);
         
     }
   };
@@ -142,7 +144,7 @@ const handleStartButton = (value) => {
     }
   };
 
-  const handleEndButton = (value) => {
+  const handleEndButton = (value) => { 
     setDisplayMinutesCount(startMinutes);
     setDisplaySecondsCount(startSeconds);
     setDisplayRounds(rounds);
@@ -157,16 +159,13 @@ return (
     <div>
         <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
         <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-        Rounds: <TimerInput value={rounds} onChange={handleRoundsInput}/>
         <div>
-            <div>
-                Display
-                {displayMinutesCount}:{displaySecondsCount}
-            </div>
-
-            <div>
-                Counter: {counter}
-            </div>
+            Rounds: <TimerInput value={rounds} onChange={handleRoundsInput}/>
+        </div>
+            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
+        <div>
+        <DisplayRounds round={displayRounds} totalRounds={rounds} />
+           
             <div>
                 Rounds: {displayRounds}
             </div>

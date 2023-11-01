@@ -1,33 +1,19 @@
 import React from "react";
 
-
-// const TimerInput = ({value, onChange}) => {
     
 const TimerInput = ({value, onChange}) => {
 
-    
 	return (
-        <div>
+        <span>
             <input 
                 value={value}
+                type="number"
+                max="59"
+                min="0"
                 onChange={e => onChange(e.target.value)} 
             />
-        </div>
+        </span>
 		);
-
-    // return (
-    //         <div>
-    //             <input 
-    //                 value={minutes}
-    //                 onChange={e => onChange(e.target.value)} 
-    //             />
-    //             :
-    //             <input 
-    //                 value={seconds}
-    //                 onChange={e => onChange(e.target.value)} 
-    //             />
-    //         </div>
-    //     	);
     
 };
 

@@ -3,6 +3,8 @@ import { useState, useRef } from 'react';
 
 import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
+import DisplayTime from "../generic/DisplayTime";
+import DisplayRounds from "../generic/DisplayRounds";
 
 const Tabata = () => {
 
@@ -18,7 +20,6 @@ const Tabata = () => {
     const [rounds, setRounds] = useState(0);
     const [startRestMinutes, setStartRestMinutes] = useState('00');
     const [startRestSeconds, setStartRestSeconds] = useState('00');
-    // const [work, setWork] = useState(true);
 
     
     const [counter, setCounter] = useState(0);
@@ -240,7 +241,7 @@ const Tabata = () => {
 
         setCounter(0);
         setRestCounter(0);
-        
+
         setRounds(0);
         setDisplayRounds(1);
         totalSeconds.current = 0;
@@ -268,29 +269,20 @@ const Tabata = () => {
         <div>
             <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
             <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-            REST
-            <TimerInput value={startRestMinutes} onChange={handleRestMinutesInput}/>:
-            <TimerInput value={startRestSeconds} onChange={handleRestSecondsInput}/>
-            
-            Rounds: <TimerInput value={rounds} onChange={handleRoundsInput}/>
             <div>
-                <div>
-                    Display
-                    {displayMinutesCount}:{displaySecondsCount}
-                </div>
-    
-                <div>
-                    Counter: {counter}
-                </div>
-                <div>
-                    Rest Counter: {restCounter}
-                </div>
-                <div>
-                    Rounds: {displayRounds}
-                </div>
-                <div>
-                    Rest {displayRestMinutes}:{displayRestSeconds}
-                </div>
+                REST
+                <TimerInput value={startRestMinutes} onChange={handleRestMinutesInput}/>:
+                <TimerInput value={startRestSeconds} onChange={handleRestSecondsInput}/>
+            </div>
+            <div>
+                Rounds: <TimerInput value={rounds} onChange={handleRoundsInput}/>
+            </div>
+            Work: <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
+            Rest:<DisplayTime minutes={displayRestMinutes} seconds={displayRestSeconds}/>
+            <DisplayRounds round={displayRounds} totalRounds={rounds} />
+            <div>
+                
+          
                 {/* COLOR DOES NOT WORK  */}
                 <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
                 <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   

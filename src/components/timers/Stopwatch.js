@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 
 import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
+import DisplayTime from "../generic/DisplayTime";
 
 
 
@@ -38,9 +39,6 @@ const Stopwatch = () =>  {
     };
 
     const handleStartButton = (value) => {
-        // setDisplayMinutesCount('00');
-        // setDisplaySecondsCount('00');
-        // setCounter(0);
 
         let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
     
@@ -117,15 +115,9 @@ const Stopwatch = () =>  {
         <div>
             <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
             <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
+            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
             <div>
-                <div>
-                    Display
-                    {displayMinutesCount}:{displaySecondsCount}
-                </div>
-
-                <div>
-                    Counter: {counter}
-                </div>
+              
                 {/* COLOR DOES NOT WORK  */}
                 <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
                 <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   

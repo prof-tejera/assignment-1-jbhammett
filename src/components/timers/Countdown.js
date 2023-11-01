@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 
 import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
+import DisplayTime from "../generic/DisplayTime";
 
 const Countdown = ()=> {
 
@@ -73,7 +74,7 @@ const Countdown = ()=> {
                     }
                     return nextTotalSecondsCounter;
                 });
-            }, 100);
+            }, 1000);
             
         }
       };
@@ -116,15 +117,10 @@ const Countdown = ()=> {
         <div>
             <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
             <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
+            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
             <div>
-                <div>
-                    Display
-                    {displayMinutesCount}:{displaySecondsCount}
-                </div>
 
-                <div>
-                    Counter: {counter}
-                </div>
+       
                 {/* COLOR DOES NOT WORK  */}
                 <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
                 <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
