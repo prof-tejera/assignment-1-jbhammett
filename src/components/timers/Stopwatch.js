@@ -5,7 +5,7 @@ import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
 import Panel from "../generic/Panel";
-import { CalculateTotalSeconds } from "../../utils/helpers";
+import { CalculateTotalSeconds, HandleStopButton } from "../../utils/helpers";
 
 
 
@@ -88,15 +88,15 @@ const Stopwatch = () =>  {
       };
 
 
-      const handleStopButton = (value) => {
-        if (secondsCountInterval.current) {
-            clearInterval(secondsCountInterval.current);
-            secondsCountInterval.current = null;
-        }
-        else {
-            handleStartButton();
-        }
-      };
+    //   const handleStopButton = (value) => {
+    //     if (secondsCountInterval.current) {
+    //         clearInterval(secondsCountInterval.current);
+    //         secondsCountInterval.current = null;
+    //     }
+    //     else {
+    //         handleStartButton();
+    //     }
+    //   };
 
       const handleResetButton = (value) => {
         setDisplayMinutesCount('00');
@@ -129,7 +129,7 @@ const Stopwatch = () =>  {
                 <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
             
                 <Button value={"Start"} color='#aaa0ff' onClick={handleStartButton} /> 
-                <Button value={"Pause/Resume"} color='#aaa0ff' onClick={handleStopButton} />   
+                <Button value={"Pause/Resume"} color='#aaa0ff' onClick={HandleStopButton} interval={secondsCountInterval} start={handleStartButton} />   
                 <Button value={"Reset"} color='#aaa0ff' onClick={handleResetButton} />   
                 <Button value={"End"} color='#aaa0ff' onClick={handleEndButton} />    
             </Panel>

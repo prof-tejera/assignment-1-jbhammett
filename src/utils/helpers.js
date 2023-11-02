@@ -10,5 +10,19 @@ export function CalculateTotalSeconds(minutes, seconds) {
 };
 
 
+
+
+export function HandleStopButton (interval, start) {
+    if (interval.current) {
+        clearInterval(interval.current);
+        interval.current = null;
+    }
+    else {
+        start();
+    }
+
+};
+
+
   export default CalculateTotalSeconds;
 
