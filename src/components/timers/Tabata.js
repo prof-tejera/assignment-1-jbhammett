@@ -35,12 +35,12 @@ const Tabata = () => {
 
     const handleMinutesInput = v => {
         setStartMinutes(v);
-        setDisplayMinutesCount(v);
+        setDisplayMinutesCount(v.toString().padStart(2,"0"));
     };
 
     const handleSecondsInput = v => {
         setStartSeconds(v);
-        setDisplaySecondsCount(v);
+        setDisplaySecondsCount(v.toString().padStart(2,"0"));
     };
     
     const handleRoundsInput = v => {
@@ -50,12 +50,12 @@ const Tabata = () => {
 
     const handleRestMinutesInput = v => {
         setStartRestMinutes(v);
-        setDisplayRestMinutes(v);
+        setDisplayRestMinutes(v.toString().padStart(2,"0"));
     };
 
     const handleRestSecondsInput = v => {
         setStartRestSeconds(v);
-        setDisplayRestSeconds(v);
+        setDisplayRestSeconds(v.toString().padStart(2,"0"));
     };
     
     
@@ -98,9 +98,9 @@ const Tabata = () => {
                         if (prevTotalSecondsCount > 0) {
                             nextTotalSecondsCounter = prevTotalSecondsCount - 1;
                         }
-                          
-                        
-                        if (nextTotalSecondsCounter % 60 === 0){
+            
+                        // Handle change to next minute
+                        if (nextTotalSecondsCounter % 60 === 59){
                             
                                 setDisplayMinutesCount((prevDisplayMinutesCount) => {
                                     if(prevDisplayMinutesCount > 0){
@@ -112,7 +112,7 @@ const Tabata = () => {
                                         return '00';       
                                     }
                                 });
-                                setDisplaySecondsCount('00');
+                                setDisplaySecondsCount('59');
             
                         }
                         else{                    
@@ -120,12 +120,12 @@ const Tabata = () => {
                             setDisplaySecondsCount(nextTotalSeconds.toString().padStart(2,"0"));
                             
                         }
+                        // Stop work timer so rest timer can start
                         if (prevTotalSecondsCount === 0){
                             work.current = false;
         
                         }
                         
-
                         return nextTotalSecondsCounter;
 
                     });
@@ -153,7 +153,9 @@ const Tabata = () => {
                                     setDisplayRestSeconds(startRestSeconds);
                                     work.current = true;
                                     const nextRound = prevRound + 1;
-        
+                                    
+
+                                    // Stop timer if end time is reached on last round
                                     if (nextRound > rounds){
                                         nextTotalSecondsCounter = 0;
                                         nextRestSecondsCounter = 0;

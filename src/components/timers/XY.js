@@ -25,12 +25,11 @@ const totalSeconds = useRef(0);
 const secondsCountInterval = useRef(null);
 
 
-// const handleMinutesInput = v => setStartMinutes(v);
 const handleMinutesInput = v => {
     setStartMinutes(v);
-    setDisplayMinutesCount(v);
+    setDisplayMinutesCount(v.toString().padStart(2,"0"));
 };
-// const handleSecondsInput = v => setStartSeconds(v);
+
 const handleSecondsInput = v => {
     setStartSeconds(v);
     setDisplaySecondsCount(v);
@@ -38,7 +37,7 @@ const handleSecondsInput = v => {
 
 const handleRoundsInput = v => {
     setRounds(v);
-    // setDisplayRounds(v);
+
 };
 
 
@@ -72,6 +71,7 @@ const handleStartButton = (value) => {
                             setDisplaySecondsCount(startSeconds);
                             const nextRound = prevRound + 1;
 
+                            // Stop timer when end time is reached on last round
                             if (nextRound > rounds){
                                 nextTotalSecondsCounter = 0;
                                 setDisplayMinutesCount('00');
@@ -86,13 +86,11 @@ const handleStartButton = (value) => {
                                 setDisplaySecondsCount(startSeconds);
                                 return nextRound;
                             }
-                
                     });
-                    
-                    
                 }
         
-                if (nextTotalSecondsCounter % 60 === 0){
+                // Handle change to next minute
+                if (nextTotalSecondsCounter % 60 === 59){
                     setDisplayMinutesCount((prevDisplayMinutesCount) => {
                         if(prevDisplayMinutesCount > 0){
                             let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) - 1;
@@ -104,7 +102,7 @@ const handleStartButton = (value) => {
                         }
                     });
                 
-                    setDisplaySecondsCount('00');
+                    setDisplaySecondsCount('59');
 
                 }
                 else{                    

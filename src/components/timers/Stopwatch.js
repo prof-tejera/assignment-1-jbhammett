@@ -46,14 +46,16 @@ const Stopwatch = () =>  {
         // Start timer
             secondsCountInterval.current = setInterval(() => {
                 setCounter((prevTotalSecondsCount) => {
+                    
                     const nextTotalSecondsCounter = prevTotalSecondsCount + 1;
-            
+                    
+                    // Stop timer when end time is reached
                     if (nextTotalSecondsCounter === totalSeconds.current) {
                         clearInterval(secondsCountInterval.current);
                     }
 
-                    if (nextTotalSecondsCounter % 60 === 0){
-                       
+                    // Handle change to next minute
+                    if (nextTotalSecondsCounter % 60 === 0){   
                         setDisplayMinutesCount((prevDisplayMinutesCount) => {
                             let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) + 1;
                             nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
@@ -70,6 +72,7 @@ const Stopwatch = () =>  {
                     }
                     return nextTotalSecondsCounter;
                 });
+                
             }, 1000);
             
         }
@@ -111,19 +114,6 @@ const Stopwatch = () =>  {
 
 	return (
         <div>
-             {/* <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
-             <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-             <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/> */}
-            
-             {/* <div> */}
-              
-                 {/* COLOR DOES NOT WORK  */}
-                 {/* <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
-                 <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
-                 <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
-                 <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
-             </div> */}
-
             <Panel type="Stopwatch">
                 <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
                 <TimerInput value={startSeconds} onChange={handleSecondsInput}/>

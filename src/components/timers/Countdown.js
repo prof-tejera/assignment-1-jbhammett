@@ -23,12 +23,12 @@ const Countdown = ()=> {
 
     const handleMinutesInput = v => {
         setStartMinutes(v);
-        setDisplayMinutesCount(v);
+        setDisplayMinutesCount(v.toString().padStart(2,"0"));
     };
 
     const handleSecondsInput = v => {
         setStartSeconds(v);
-        setDisplaySecondsCount(v);
+        setDisplaySecondsCount(v.toString().padStart(2,"0"));
     };
 
     const handleStartButton = (value) => {
@@ -53,10 +53,11 @@ const Countdown = ()=> {
                         clearInterval(secondsCountInterval.current);
                     }
 
-                    if (nextTotalSecondsCounter % 60 === 0){
+                    if (nextTotalSecondsCounter % 60 === 59){
                             setDisplayMinutesCount((prevDisplayMinutesCount) => {
                                 if(prevDisplayMinutesCount > 0){
                                     let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) - 1;
+        
                                     nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
                                     return nextDisplayMinutesCount;
                                 }
@@ -65,7 +66,7 @@ const Countdown = ()=> {
                                 }
                             });
                     
-                        setDisplaySecondsCount('00');
+                        setDisplaySecondsCount('59');
 
                     }
                     else{                    
@@ -121,7 +122,6 @@ const Countdown = ()=> {
                 <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
                 <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
 
-                {/* COLOR DOES NOT WORK  */}
                 <Button value={"Start"} color="#aaa0ff" onClick={handleStartButton} /> 
                 <Button value={"Stop"} color="#aaa0ff" onClick={handleStopButton} />   
                 <Button value={"Reset"} color="#aaa0ff"  onClick={handleResetButton} />   
