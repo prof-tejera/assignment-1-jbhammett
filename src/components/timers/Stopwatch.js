@@ -16,24 +16,23 @@ const Stopwatch = () =>  {
     const [startMinutes, setStartMinutes] = useState('00');
     const [startSeconds, setStartSeconds] = useState('00');
     
-    const [counter, setCounter] = useState(0);
-    
     const totalSeconds = useRef(0);
     const secondsCountInterval = useRef(null);
+    const counter = useRef(0);
 
 
     const handleMinutesInput = (value) => {
         setStartMinutes(value);
         setDisplayMinutesCount('00');
         setDisplaySecondsCount('00');
-        setCounter(0);
+        counter.current = 0;
     };
 
     const handleSecondsInput = (value) => {
         setStartSeconds(value);
         setDisplayMinutesCount('00');
         setDisplaySecondsCount('00');
-        setCounter(0);
+        counter.current = 0;
     };
 
     const handleStartButton = (value) => {
@@ -45,10 +44,12 @@ const Stopwatch = () =>  {
         if (totalSeconds.current > 0){
         // Start timer
             secondsCountInterval.current = setInterval(() => {
-                setCounter((prevTotalSecondsCount) => {
+        
+                counter.current = (() => {
                     
-                    const nextTotalSecondsCounter = prevTotalSecondsCount + 1;
-                    
+                    const nextTotalSecondsCounter = counter.current + 1;
+                   
+
                     // Stop timer when end time is reached
                     if (nextTotalSecondsCounter === totalSeconds.current) {
                         clearInterval(secondsCountInterval.current);
@@ -70,8 +71,9 @@ const Stopwatch = () =>  {
                         setDisplaySecondsCount(nextTotalSeconds.toString().padStart(2,"0"));
                         
                     }
+                   
                     return nextTotalSecondsCounter;
-                });
+                })();
                 
             }, 1000);
             
@@ -94,7 +96,7 @@ const Stopwatch = () =>  {
         setDisplaySecondsCount('00');
         setStartMinutes('00');
         setStartSeconds('00');
-        setCounter(0);
+        counter.current = 0;
         totalSeconds.current = 0;
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
@@ -105,7 +107,7 @@ const Stopwatch = () =>  {
       const handleEndButton = (value) => {
         setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
         setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
-        setCounter(totalSeconds.current);
+        counter.current = totalSeconds.current;
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
             secondsCountInterval.current = null;

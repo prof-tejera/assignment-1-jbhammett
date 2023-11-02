@@ -19,10 +19,9 @@ const [startMinutes, setStartMinutes] = useState('00');
 const [startSeconds, setStartSeconds] = useState('00');
 const [rounds, setRounds] = useState(0);
 
-const [counter, setCounter] = useState(0);
-
 const totalSeconds = useRef(0);
 const secondsCountInterval = useRef(null);
+const counter = useRef(0);
 
 
 const handleMinutesInput = v => {
@@ -44,12 +43,10 @@ const handleRoundsInput = v => {
 const handleStartButton = (value) => {
         
     let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
-    if (parseInt(displayMinutesCount) * 60 + parseInt(displaySecondsCount) === seconds){
-        setCounter(seconds);
-    }
+    counter.current = seconds;
+
 
     totalSeconds.current = seconds;
-
 
 
     if (totalSeconds.current > 0 && rounds > 0){
@@ -59,33 +56,33 @@ const handleStartButton = (value) => {
     // Start timer
         secondsCountInterval.current = setInterval(() => {
             let nextTotalSecondsCounter = 0;
-            setCounter((prevTotalSecondsCount) => {
-                if (prevTotalSecondsCount > 0) {
-                    nextTotalSecondsCounter = prevTotalSecondsCount - 1;
+            counter.current = (() => {
+                if (counter.current > 0) {
+                    nextTotalSecondsCounter = counter.current - 1;
                 }
                 else if (displayRounds < rounds){
         
                     setDisplayRounds((prevRound) =>{
                  
+                        const nextRound = prevRound + 1;
+
+                        // Stop timer when end time is reached on last round
+                        if (nextRound > rounds){
+                            nextTotalSecondsCounter = 0;
+                            setDisplayMinutesCount('00');
+                            setDisplaySecondsCount('00');
+
+                            clearInterval(secondsCountInterval.current);
+                            return prevRound;
+                        }
+                        // Otherwise, start next round
+                        else {
+                            nextTotalSecondsCounter = totalSeconds.current;
                             setDisplayMinutesCount(startMinutes);
                             setDisplaySecondsCount(startSeconds);
-                            const nextRound = prevRound + 1;
-
-                            // Stop timer when end time is reached on last round
-                            if (nextRound > rounds){
-                                nextTotalSecondsCounter = 0;
-                                setDisplayMinutesCount('00');
-                                setDisplaySecondsCount('00');
-
-                                clearInterval(secondsCountInterval.current);
-                                return prevRound;
-                            }
-                            else {
-                                nextTotalSecondsCounter = totalSeconds.current;
-                                setDisplayMinutesCount(startMinutes);
-                                setDisplaySecondsCount(startSeconds);
-                                return nextRound;
-                            }
+                            counter.current = totalSeconds.current;
+                            return nextRound;
+                        }
                     });
                 }
         
@@ -111,7 +108,7 @@ const handleStartButton = (value) => {
                     
                 }
                 return nextTotalSecondsCounter;
-            });
+            })();
         
         }, 1000);
         
@@ -134,7 +131,7 @@ const handleStartButton = (value) => {
     setDisplaySecondsCount('00');
     setStartMinutes('00');
     setStartSeconds('00');
-    setCounter(0);
+    counter.current = 0;
     setRounds(0);
     setDisplayRounds(1);
     totalSeconds.current = 0;
@@ -148,7 +145,7 @@ const handleStartButton = (value) => {
     setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
     setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
     setDisplayRounds(rounds);
-    setCounter(totalSeconds.current);
+    counter.current = totalSeconds.current;
     if (secondsCountInterval.current) {
         clearInterval(secondsCountInterval.current);
         secondsCountInterval.current = null;

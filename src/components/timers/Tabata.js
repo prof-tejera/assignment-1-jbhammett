@@ -24,13 +24,12 @@ const Tabata = () => {
     const [startRestSeconds, setStartRestSeconds] = useState('00');
 
     
-    const [counter, setCounter] = useState(0);
-    const [restCounter, setRestCounter] = useState(0);
-    
     const totalSeconds = useRef(0);
     const totalRestSeconds = useRef(0);
     const secondsCountInterval = useRef(null);
     const work = useRef(true);
+    const counter = useRef(0);
+    const restCounter = useRef(0);
     
 
     const handleMinutesInput = v => {
@@ -65,21 +64,16 @@ const Tabata = () => {
         let workSeconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
         
         
-        if (parseInt(displayMinutesCount) * 60 + parseInt(displaySecondsCount) === workSeconds){
-            setCounter(workSeconds);
-        }
+        counter.current = workSeconds;
 
-        
         totalSeconds.current = workSeconds;
 
         let restSeconds = (parseInt(startRestMinutes * 60)) + parseInt(startRestSeconds);
         totalRestSeconds.current = restSeconds;
 
-        if (parseInt(displayRestMinutes) * 60 + parseInt(displayRestSeconds) === restSeconds){
-            setRestCounter(restSeconds);
-        }
+        restCounter.current = restSeconds;
 
-    
+
         if (totalSeconds.current > 0 && rounds > 0){
             // Subtract 1 from display minutes if timer is set to full minute.
             if (displayMinutesCount > 0 && displaySecondsCount === 0){
@@ -89,14 +83,12 @@ const Tabata = () => {
             secondsCountInterval.current = setInterval(() => {
                 let nextTotalSecondsCounter = 0;
                 let nextRestSecondsCounter = 0;
-
                 // Work timer
                 if (work.current){
-                
-                    setCounter((prevTotalSecondsCount) => {
+                    counter.current = (() => {
                         // If seconds counter is not at 0, subtract 1
-                        if (prevTotalSecondsCount > 0) {
-                            nextTotalSecondsCounter = prevTotalSecondsCount - 1;
+                        if (counter.current > 0) {
+                            nextTotalSecondsCounter = counter.current - 1;
                         }
             
                         // Handle change to next minute
@@ -121,65 +113,54 @@ const Tabata = () => {
                             
                         }
                         // Stop work timer so rest timer can start
-                        if (prevTotalSecondsCount === 0){
+                        if (counter.current === 0){
                             work.current = false;
         
                         }
                         
                         return nextTotalSecondsCounter;
 
-                    });
+                    })();
                 }
 
                 else {
-              
-                    setRestCounter((prevRestSecondsCount) => {
+                    restCounter.current = (() => {
                         // If seconds counter is not at 0, subtract 1
-                        if (prevRestSecondsCount > 0) {
-                            nextRestSecondsCounter = prevRestSecondsCount - 1;
+                        if (restCounter.current > 0) {
+                            nextRestSecondsCounter = restCounter.current - 1;
                         }
 
                         else if (displayRounds < rounds){
         
                             setDisplayRounds((prevRound) =>{
-                                    setCounter(totalSeconds.current);
-                                    setRestCounter(totalRestSeconds.current);
+                                const nextRound = prevRound + 1;
+                                
+
+                                // Stop timer if end time is reached on last round
+                                if (nextRound > rounds){
+                                    nextTotalSecondsCounter = 0;
+                                    nextRestSecondsCounter = 0;
+                                    setDisplayMinutesCount('00');
+                                    setDisplaySecondsCount('00');
+                                    setDisplayRestMinutes('00');
+                                    setDisplayRestSeconds('00');
+    
+                                    clearInterval(secondsCountInterval.current);
+                                    return prevRound;
+                                }
+                                else {
+                                    counter.current = totalSeconds.current;
+                                    restCounter.current = totalRestSeconds.current;
                                     nextTotalSecondsCounter = totalSeconds.current;
                                     nextRestSecondsCounter = totalRestSeconds.current;
-                         
-                                    setDisplayMinutesCount(startMinutes);
-                                    setDisplaySecondsCount(startSeconds);
-                                    setDisplayRestMinutes(startRestMinutes);
-                                    setDisplayRestSeconds(startRestSeconds);
+                                    setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
+                                    setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
+                                    setDisplayRestMinutes(startRestMinutes.toString().padStart(2,"0"));
+                                    setDisplayRestSeconds(startRestSeconds.toString().padStart(2,"0"));
                                     work.current = true;
-                                    const nextRound = prevRound + 1;
-                                    
 
-                                    // Stop timer if end time is reached on last round
-                                    if (nextRound > rounds){
-                                        nextTotalSecondsCounter = 0;
-                                        nextRestSecondsCounter = 0;
-                                        setDisplayMinutesCount('00');
-                                        setDisplaySecondsCount('00');
-                                        setDisplayRestMinutes('00');
-                                        setDisplayRestSeconds('00');
-        
-                                        clearInterval(secondsCountInterval.current);
-                                        return prevRound;
-                                    }
-                                    else {
-                                        setCounter(totalSeconds.current);
-                                        setRestCounter(totalRestSeconds.current);
-                                        nextTotalSecondsCounter = totalSeconds.current;
-                                        nextRestSecondsCounter = totalRestSeconds.current;
-                                        setDisplayMinutesCount(startMinutes);
-                                        setDisplaySecondsCount(startSeconds);
-                                        setDisplayRestMinutes(startRestMinutes);
-                                        setDisplayRestSeconds(startRestSeconds);
-                                        work.current = true;
-
-                                        return nextRound;
-                                    }
+                                    return nextRound;
+                                }
                         
                             });   
                         }
@@ -208,14 +189,8 @@ const Tabata = () => {
                     
                     return nextRestSecondsCounter;
 
-                });
-
-
-           
-            
+                })();
             }
-        
-            
             }, 1000);
             
         }
@@ -243,8 +218,9 @@ const Tabata = () => {
         setStartRestMinutes('00');
         setStartRestSeconds('00');
 
-        setCounter(0);
-        setRestCounter(0);
+        counter.current = 0;
+        restCounter.current = 0;
+        work.current = true;
 
         setRounds(0);
         setDisplayRounds(1);
@@ -261,8 +237,10 @@ const Tabata = () => {
         setDisplayRounds(rounds);
         setDisplayRestMinutes(startRestMinutes);
         setDisplayRestSeconds(startRestSeconds);
-        setCounter(totalSeconds.current);
-        setRestCounter(totalRestSeconds.current);
+
+        counter.current = totalSeconds.current;
+        restCounter.current = totalRestSeconds.current;
+
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
             secondsCountInterval.current = null;

@@ -14,10 +14,11 @@ const Countdown = ()=> {
     const [startMinutes, setStartMinutes] = useState('00');
     const [startSeconds, setStartSeconds] = useState('00');
     
-    const [counter, setCounter] = useState(0);
+    // const [counter, setCounter] = useState(0);
     
     const totalSeconds = useRef(0);
     const secondsCountInterval = useRef(null);
+    const counter = useRef(0);
 
 
 
@@ -33,10 +34,11 @@ const Countdown = ()=> {
 
     const handleStartButton = (value) => {
         
+        
         let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
-        if (parseInt(displayMinutesCount) * 60 + parseInt(displaySecondsCount) === seconds){
-            setCounter(seconds);
-        }
+
+        counter.current = seconds;
+  
     
         totalSeconds.current = seconds;
     
@@ -44,15 +46,17 @@ const Countdown = ()=> {
             if (displayMinutesCount > 0 && displaySecondsCount === 0){
                 setDisplayMinutesCount((displayMinutesCount - 1).toString().padStart(2,"0"));
             }
-        // Start timer
+            // Start timer
             secondsCountInterval.current = setInterval(() => {
-                setCounter((prevTotalSecondsCount) => {
-                    const nextTotalSecondsCounter = prevTotalSecondsCount - 1;
+                counter.current = (() => {
+                    const nextTotalSecondsCounter = counter.current - 1;
             
+                    // Stop timer when end time is reached
                     if (nextTotalSecondsCounter === 0) {
                         clearInterval(secondsCountInterval.current);
                     }
-
+                    
+                    // Handle change to next minute
                     if (nextTotalSecondsCounter % 60 === 59){
                             setDisplayMinutesCount((prevDisplayMinutesCount) => {
                                 if(prevDisplayMinutesCount > 0){
@@ -75,7 +79,7 @@ const Countdown = ()=> {
                         
                     }
                     return nextTotalSecondsCounter;
-                });
+                })();
             }, 1000);
             
         }
@@ -97,7 +101,7 @@ const Countdown = ()=> {
         setDisplaySecondsCount('00');
         setStartMinutes('00');
         setStartSeconds('00');
-        setCounter(0);
+        counter.current = 0;
         totalSeconds.current = 0;
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
@@ -108,7 +112,7 @@ const Countdown = ()=> {
       const handleEndButton = (value) => {
         setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
         setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
-        setCounter(totalSeconds.current);
+        counter.current = totalSeconds.current;
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
             secondsCountInterval.current = null;
