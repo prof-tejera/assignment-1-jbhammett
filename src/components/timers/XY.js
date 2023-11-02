@@ -7,6 +7,7 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
+import CalculateTotalSeconds from "../../utils/helpers";
 
 const XY = () => {
 
@@ -41,8 +42,12 @@ const handleRoundsInput = v => {
 
 
 const handleStartButton = (value) => {
-        
-    let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
+    let format_minutes_input = startMinutes.toString().padStart(2,"0");
+    let format_seconds_input = startSeconds.toString().padStart(2,"0");  
+    handleMinutesInput(format_minutes_input);
+    handleSecondsInput(format_seconds_input);  
+
+    let seconds = CalculateTotalSeconds(startMinutes, startSeconds);
     counter.current = seconds;
 
 
@@ -78,8 +83,8 @@ const handleStartButton = (value) => {
                         // Otherwise, start next round
                         else {
                             nextTotalSecondsCounter = totalSeconds.current;
-                            setDisplayMinutesCount(startMinutes);
-                            setDisplaySecondsCount(startSeconds);
+                            setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
+                            setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
                             counter.current = totalSeconds.current;
                             return nextRound;
                         }

@@ -5,6 +5,7 @@ import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
 import Panel from "../generic/Panel";
+import CalculateTotalSeconds from "../../utils/helpers";
 
 
 
@@ -36,8 +37,12 @@ const Stopwatch = () =>  {
     };
 
     const handleStartButton = (value) => {
+        let format_minutes_input = startMinutes.toString().padStart(2,"0");
+        let format_seconds_input = startSeconds.toString().padStart(2,"0");
+        handleMinutesInput(format_minutes_input);
+        handleSecondsInput(format_seconds_input);
 
-        let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
+        let seconds = CalculateTotalSeconds(startMinutes, startSeconds);
     
         totalSeconds.current = seconds;
     
@@ -49,7 +54,6 @@ const Stopwatch = () =>  {
                     
                     const nextTotalSecondsCounter = counter.current + 1;
                    
-
                     // Stop timer when end time is reached
                     if (nextTotalSecondsCounter === totalSeconds.current) {
                         clearInterval(secondsCountInterval.current);

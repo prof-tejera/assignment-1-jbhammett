@@ -5,6 +5,7 @@ import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
 import Panel from "../generic/Panel";
+import CalculateTotalSeconds from "../../utils/helpers";
 
 const Countdown = ()=> {
 
@@ -13,8 +14,6 @@ const Countdown = ()=> {
 
     const [startMinutes, setStartMinutes] = useState('00');
     const [startSeconds, setStartSeconds] = useState('00');
-    
-    // const [counter, setCounter] = useState(0);
     
     const totalSeconds = useRef(0);
     const secondsCountInterval = useRef(null);
@@ -33,10 +32,12 @@ const Countdown = ()=> {
     };
 
     const handleStartButton = (value) => {
+        let format_minutes_input = startMinutes.toString().padStart(2,"0");
+        let format_seconds_input = startSeconds.toString().padStart(2,"0");
+        handleMinutesInput(format_minutes_input);
+        handleSecondsInput(format_seconds_input);
         
-        
-        let seconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
-
+        let seconds = CalculateTotalSeconds(startMinutes, startSeconds);
         counter.current = seconds;
   
     

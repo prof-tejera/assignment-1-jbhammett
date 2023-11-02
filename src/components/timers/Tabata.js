@@ -7,6 +7,7 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
+import CalculateTotalSeconds from "../../utils/helpers";
 
 const Tabata = () => {
 
@@ -59,16 +60,25 @@ const Tabata = () => {
     
     
     const handleStartButton = (value) => {
+        let format_minutes_input = startMinutes.toString().padStart(2,"0");
+        let format_seconds_input = startSeconds.toString().padStart(2,"0");
+        handleMinutesInput(format_minutes_input);
+        handleSecondsInput(format_seconds_input);
+
+        let format_rest_minutes_input = startRestMinutes.toString().padStart(2,"0");
+        let format_rest_seconds_input = startRestSeconds.toString().padStart(2,"0");
+        handleRestMinutesInput(format_rest_minutes_input);
+        handleRestSecondsInput(format_rest_seconds_input);
 
          
-        let workSeconds = (parseInt(startMinutes * 60)) + parseInt(startSeconds);
+        let workSeconds = CalculateTotalSeconds(startMinutes, startSeconds);
         
         
         counter.current = workSeconds;
 
         totalSeconds.current = workSeconds;
 
-        let restSeconds = (parseInt(startRestMinutes * 60)) + parseInt(startRestSeconds);
+        let restSeconds = CalculateTotalSeconds(startRestMinutes, startRestSeconds);
         totalRestSeconds.current = restSeconds;
 
         restCounter.current = restSeconds;
@@ -166,7 +176,7 @@ const Tabata = () => {
                         }
 
 
-                        if (nextRestSecondsCounter % 60 === 0){
+                        if (nextRestSecondsCounter % 60 === 59){
                             
                             setDisplayRestMinutes((prevDisplayRestMinutes) => {
                                 if(prevDisplayRestMinutes > 0){
@@ -178,7 +188,7 @@ const Tabata = () => {
                                     return '00';       
                                 }
                             });
-                            setDisplayRestSeconds('00');
+                            setDisplayRestSeconds('59');
         
                     }
                     else{                    
