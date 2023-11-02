@@ -182,7 +182,7 @@ const Tabata = () => {
                             });   
                         }
 
-
+                        // Handle minute change
                         if (nextRestSecondsCounter % 60 === 59){
                             
                             setDisplayRestMinutes((prevDisplayRestMinutes) => {
@@ -239,11 +239,11 @@ const Tabata = () => {
       };
     
       const handleEndButton = (value) => { 
-        setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
-        setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
+        setDisplayMinutesCount('00');
+        setDisplaySecondsCount('00');
         setDisplayRounds(rounds);
-        setDisplayRestMinutes(startRestMinutes);
-        setDisplayRestSeconds(startRestSeconds);
+        setDisplayRestMinutes('00');
+        setDisplayRestSeconds('00');
 
         counter.current = totalSeconds.current;
         restCounter.current = totalRestSeconds.current;

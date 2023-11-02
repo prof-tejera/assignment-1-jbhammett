@@ -143,8 +143,8 @@ const handleStartButton = (value) => {
   };
 
   const handleEndButton = (value) => { 
-    setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
-    setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
+    setDisplayMinutesCount('00');
+    setDisplaySecondsCount('00');
     setDisplayRounds(rounds);
     counter.current = totalSeconds.current;
     if (secondsCountInterval.current) {

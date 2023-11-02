@@ -68,7 +68,6 @@ const Countdown = ()=> {
                             setDisplayMinutesCount((prevDisplayMinutesCount) => {
                                 if(prevDisplayMinutesCount > 0){
                                     let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) - 1;
-        
                                     nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
                                     return nextDisplayMinutesCount;
                                 }
@@ -107,8 +106,8 @@ const Countdown = ()=> {
       };
 
       const handleEndButton = (value) => {
-        setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
-        setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
+        setDisplayMinutesCount('00');
+        setDisplaySecondsCount('00');
         counter.current = totalSeconds.current;
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);

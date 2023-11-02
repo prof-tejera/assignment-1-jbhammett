@@ -4,12 +4,10 @@
 
 
 // Convert minutes and seconds to seconds
-export function CalculateTotalSeconds(minutes, seconds) {
+export const CalculateTotalSeconds = (minutes, seconds) => {
     const total = (parseInt(minutes * 60)) + parseInt(seconds);
     return total;
 };
-
-
 
 
 export const HandleStopButton = ((interval, start) => {
@@ -24,5 +22,7 @@ export const HandleStopButton = ((interval, start) => {
 });
 
 
-  export default CalculateTotalSeconds;
+
+
+
 
