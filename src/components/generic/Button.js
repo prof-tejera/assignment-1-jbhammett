@@ -4,7 +4,7 @@ const Button = ({value, color, onClick, interval, start}) => {
 
     return (
       <div
-       onClick={()=>onClick()}
+       onClick={()=>onClick(interval, start)}
         style={{
             padding: 5,
             // width: 60,

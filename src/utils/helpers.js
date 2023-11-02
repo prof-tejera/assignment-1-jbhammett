@@ -12,7 +12,7 @@ export function CalculateTotalSeconds(minutes, seconds) {
 
 
 
-export function HandleStopButton (interval, start) {
+export const HandleStopButton = ((interval, start) => {
     if (interval.current) {
         clearInterval(interval.current);
         interval.current = null;
@@ -21,7 +21,7 @@ export function HandleStopButton (interval, start) {
         start();
     }
 
-};
+});
 
 
   export default CalculateTotalSeconds;

@@ -38,7 +38,7 @@ const Stopwatch = () =>  {
 
     const handleStartButton = (value) => {
         //Format input value to time format
-        if (displayMinutesCount === 0 && displaySecondsCount ===0){
+        if (parseInt(displayMinutesCount) === 0 && parseInt(displaySecondsCount) === 0){
             let format_minutes_input = startMinutes.toString().padStart(2,"0");
             let format_seconds_input = startSeconds.toString().padStart(2,"0");
             handleMinutesInput(format_minutes_input);
@@ -87,16 +87,6 @@ const Stopwatch = () =>  {
         }
       };
 
-
-    //   const handleStopButton = (value) => {
-    //     if (secondsCountInterval.current) {
-    //         clearInterval(secondsCountInterval.current);
-    //         secondsCountInterval.current = null;
-    //     }
-    //     else {
-    //         handleStartButton();
-    //     }
-    //   };
 
       const handleResetButton = (value) => {
         setDisplayMinutesCount('00');
