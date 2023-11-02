@@ -7,7 +7,7 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
-import { CalculateTotalSeconds, HandleStopButton, HandleCountdownMinuteChange } from "../../utils/helpers";
+import { CalculateTotalSeconds, HandleStopButton, HandleCountdownMinuteChange, setTimes } from "../../utils/helpers";
 
 
 const Tabata = () => {
@@ -139,10 +139,10 @@ const Tabata = () => {
                                 if (nextRound > rounds){
                                     nextTotalSecondsCounter = 0;
                                     nextRestSecondsCounter = 0;
-                                    setDisplayMinutesCount('00');
-                                    setDisplaySecondsCount('00');
-                                    setDisplayRestMinutes('00');
-                                    setDisplayRestSeconds('00');
+                                
+                                    setTimes('00',setDisplayMinutesCount, setDisplaySecondsCount, setDisplayRestMinutes, setDisplayRestSeconds);
+
+
     
                                     clearInterval(secondsCountInterval.current);
                                     return prevRound;
@@ -179,15 +179,8 @@ const Tabata = () => {
     
     
       const handleResetButton = (value) => {
-        setDisplayMinutesCount('00');
-        setDisplaySecondsCount('00');
-        setDisplayRestMinutes('00');
-        setDisplayRestSeconds('00');
-
-        setStartMinutes('00');
-        setStartSeconds('00');
-        setStartRestMinutes('00');
-        setStartRestSeconds('00');
+        setTimes('00',setDisplayMinutesCount, setDisplaySecondsCount, setDisplayRestMinutes, setDisplayRestSeconds);
+        setTimes('00',setStartMinutes, setStartSeconds, setStartRestMinutes, setStartRestSeconds);
 
         counter.current = 0;
         restCounter.current = 0;
@@ -203,11 +196,8 @@ const Tabata = () => {
       };
     
       const handleEndButton = (value) => { 
-        setDisplayMinutesCount('00');
-        setDisplaySecondsCount('00');
+        setTimes('00',setDisplayMinutesCount, setDisplaySecondsCount, setDisplayRestMinutes, setDisplayRestSeconds);
         setDisplayRounds(rounds);
-        setDisplayRestMinutes('00');
-        setDisplayRestSeconds('00');
 
         counter.current = totalSeconds.current;
         restCounter.current = totalRestSeconds.current;

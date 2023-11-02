@@ -5,7 +5,7 @@ import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
 import Panel from "../generic/Panel";
-import { CalculateTotalSeconds, HandleStopButton } from "../../utils/helpers";
+import { CalculateTotalSeconds, HandleStopButton, setTimes } from "../../utils/helpers";
 
 
 
@@ -89,10 +89,12 @@ const Stopwatch = () =>  {
 
 
       const handleResetButton = (value) => {
-        setDisplayMinutesCount('00');
-        setDisplaySecondsCount('00');
-        setStartMinutes('00');
-        setStartSeconds('00');
+        // setDisplayMinutesCount('00');
+        // setDisplaySecondsCount('00');
+        // setStartMinutes('00');
+        // setStartSeconds('00');
+        setTimes('00',setDisplayMinutesCount, setDisplaySecondsCount, setStartMinutes, setStartSeconds);
+
         counter.current = 0;
         totalSeconds.current = 0;
         if (secondsCountInterval.current) {

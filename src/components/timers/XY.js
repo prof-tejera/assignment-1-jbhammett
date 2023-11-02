@@ -7,7 +7,7 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
-import { CalculateTotalSeconds, HandleStopButton, HandleCountdownMinuteChange } from "../../utils/helpers";
+import { CalculateTotalSeconds, HandleStopButton, HandleCountdownMinuteChange, setTimes } from "../../utils/helpers";
 
 
 const XY = () => {
@@ -110,10 +110,8 @@ const handleStartButton = (value) => {
 
 
   const handleResetButton = (value) => {
-    setDisplayMinutesCount('00');
-    setDisplaySecondsCount('00');
-    setStartMinutes('00');
-    setStartSeconds('00');
+    setTimes('00',setDisplayMinutesCount, setDisplaySecondsCount, setStartMinutes, setStartSeconds);
+
     counter.current = 0;
     setRounds(0);
     setDisplayRounds(1);

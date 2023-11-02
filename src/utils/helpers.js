@@ -49,5 +49,11 @@ export const HandleCountdownMinuteChange = ((nextTotalSecondsCounter, setDisplay
     });
 
 
+export const setTimes = (value, setDisplayMinutesCount, setDisplaySecondsCount, setStartMinutes, setStartSeconds) => {
+        setDisplayMinutesCount(value);
+        setDisplaySecondsCount(value);
+        setStartMinutes(value);
+        setStartSeconds(value);
+};    
 
 
