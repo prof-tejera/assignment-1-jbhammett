@@ -11,6 +11,7 @@ const TimerInput = ({value, onChange}) => {
                 max="59"
                 min="0"
                 onChange={e => onChange(e.target.value)} 
+                style={{marginBottom: 10}}
             />
         </span>
 		);

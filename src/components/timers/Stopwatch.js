@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
+import Panel from "../generic/Panel";
 
 
 
@@ -20,9 +21,6 @@ const Stopwatch = () =>  {
     const totalSeconds = useRef(0);
     const secondsCountInterval = useRef(null);
 
-
-    // const handleMinutesInput = v => setStartMinutes(v);
-    // const handleSecondsInput = v => setStartSeconds(v);
 
     const handleMinutesInput = (value) => {
         setStartMinutes(value);
@@ -102,8 +100,8 @@ const Stopwatch = () =>  {
       };
 
       const handleEndButton = (value) => {
-        setDisplayMinutesCount(startMinutes);
-        setDisplaySecondsCount(startSeconds);
+        setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
+        setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
         setCounter(totalSeconds.current);
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
@@ -113,17 +111,29 @@ const Stopwatch = () =>  {
 
 	return (
         <div>
-            <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
-            <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
-            <div>
+             {/* <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
+             <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
+             <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/> */}
+            
+             {/* <div> */}
               
-                {/* COLOR DOES NOT WORK  */}
-                <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
-                <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
-                <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
-                <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
-            </div>
+                 {/* COLOR DOES NOT WORK  */}
+                 {/* <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
+                 <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
+                 <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
+                 <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
+             </div> */}
+
+            <Panel type="Stopwatch">
+                <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
+                <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
+                <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
+            
+                <Button value={"Start"} color='#aaa0ff' onClick={handleStartButton} /> 
+                <Button value={"Stop"} color='#aaa0ff' onClick={handleStopButton} />   
+                <Button value={"Reset"} color='#aaa0ff' onClick={handleResetButton} />   
+                <Button value={"End"} color='#aaa0ff' onClick={handleEndButton} />    
+            </Panel>
         </div>
 
 		);

@@ -7,12 +7,17 @@ const Button = ({value, color, onClick}) => {
       <div
        onClick={()=>onClick()}
         style={{
-            padding:20,
+            padding: 5,
             width: 60,
-            backgroundColor: {color},
-            fontSize: "2rem",
-            color: "#000000",
-            textAlign: "center"
+            margin: 5,
+            backgroundColor: color,
+            fontSize: "1rem",
+            textAlign: "center",
+            borderRadius: "10%",
+            marginRight: "auto",
+            marginLeft: "auto",
+            fontWeight: "600",
+            textTransform: "uppercase"
         }}>
             {value}
 

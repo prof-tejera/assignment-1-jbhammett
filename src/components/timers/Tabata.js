@@ -5,6 +5,8 @@ import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
+import Panel from "../generic/Panel";
+import DisplayTitle from "../generic/DisplayTitle";
 
 const Tabata = () => {
 
@@ -252,8 +254,8 @@ const Tabata = () => {
       };
     
       const handleEndButton = (value) => { 
-        setDisplayMinutesCount(startMinutes);
-        setDisplaySecondsCount(startSeconds);
+        setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
+        setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
         setDisplayRounds(rounds);
         setDisplayRestMinutes(startRestMinutes);
         setDisplayRestSeconds(startRestSeconds);
@@ -267,28 +269,46 @@ const Tabata = () => {
     
     return (
         <div>
-            <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
-            <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-            <div>
-                REST
-                <TimerInput value={startRestMinutes} onChange={handleRestMinutesInput}/>:
-                <TimerInput value={startRestSeconds} onChange={handleRestSecondsInput}/>
-            </div>
-            <div>
-                Rounds: <TimerInput value={rounds} onChange={handleRoundsInput}/>
-            </div>
-            Work: <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
-            Rest:<DisplayTime minutes={displayRestMinutes} seconds={displayRestSeconds}/>
-            <DisplayRounds round={displayRounds} totalRounds={rounds} />
-            <div>
+            <Panel type="Tabata">
+                <span style={{
+                    fontSize: "1rem",
+                    marginRight: 5
+                }}>
+                    Work
+                </span>
                 
-          
-                {/* COLOR DOES NOT WORK  */}
-                <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
-                <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
-                <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
-                <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
-            </div>
+                <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
+                <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
+                <div>
+                    <span style={{
+                        fontSize: "1rem",
+                        marginRight: 5
+                    }}>
+                        Rest
+                    </span>
+                    <TimerInput value={startRestMinutes} onChange={handleRestMinutesInput}/>:
+                    <TimerInput value={startRestSeconds} onChange={handleRestSecondsInput}/>
+                </div>
+                <div style={{
+                    marginBottom: 20
+                }}>
+                    <DisplayTitle title="Rounds" />
+                    <TimerInput value={rounds} onChange={handleRoundsInput}/>
+                </div>
+
+
+                <DisplayTitle title="Work" />
+                <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
+                <DisplayTitle title="Rest" />
+                <DisplayTime minutes={displayRestMinutes} seconds={displayRestSeconds}/>
+                <DisplayRounds round={displayRounds} totalRounds={rounds} />
+
+                <Button value={"Start"} color="#aaa0ff"  onClick={handleStartButton} /> 
+                <Button value={"Stop"} color="#aaa0ff"  onClick={handleStopButton} />   
+                <Button value={"Reset"} color="#aaa0ff"  onClick={handleResetButton} />   
+                <Button value={"End"} color="#aaa0ff" onClick={handleEndButton} />                  
+           
+            </Panel>
         </div>
     
         );

@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
+import Panel from "../generic/Panel";
 
 const Countdown = ()=> {
 
@@ -19,12 +20,12 @@ const Countdown = ()=> {
     const secondsCountInterval = useRef(null);
 
 
-    // const handleMinutesInput = v => setStartMinutes(v);
+
     const handleMinutesInput = v => {
         setStartMinutes(v);
         setDisplayMinutesCount(v);
     };
-    // const handleSecondsInput = v => setStartSeconds(v);
+
     const handleSecondsInput = v => {
         setStartSeconds(v);
         setDisplaySecondsCount(v);
@@ -104,8 +105,8 @@ const Countdown = ()=> {
       };
 
       const handleEndButton = (value) => {
-        setDisplayMinutesCount(startMinutes);
-        setDisplaySecondsCount(startSeconds);
+        setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
+        setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
         setCounter(totalSeconds.current);
         if (secondsCountInterval.current) {
             clearInterval(secondsCountInterval.current);
@@ -115,18 +116,17 @@ const Countdown = ()=> {
 
 	return (
         <div>
-            <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
-            <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
-            <div>
+            <Panel type="Countdown">
+                <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
+                <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
+                <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
 
-       
                 {/* COLOR DOES NOT WORK  */}
-                <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
-                <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
-                <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
-                <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
-            </div>
+                <Button value={"Start"} color="#aaa0ff" onClick={handleStartButton} /> 
+                <Button value={"Stop"} color="#aaa0ff" onClick={handleStopButton} />   
+                <Button value={"Reset"} color="#aaa0ff"  onClick={handleResetButton} />   
+                <Button value={"End"} color="#aaa0ff"  onClick={handleEndButton} />                  
+            </Panel>
         </div>
 
 		);

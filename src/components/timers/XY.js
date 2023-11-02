@@ -5,6 +5,8 @@ import TimerInput from "../generic/TimerInput";
 import Button from "../generic/Button";
 import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
+import Panel from "../generic/Panel";
+import DisplayTitle from "../generic/DisplayTitle";
 
 const XY = () => {
 
@@ -145,8 +147,8 @@ const handleStartButton = (value) => {
   };
 
   const handleEndButton = (value) => { 
-    setDisplayMinutesCount(startMinutes);
-    setDisplaySecondsCount(startSeconds);
+    setDisplayMinutesCount(startMinutes.toString().padStart(2,"0"));
+    setDisplaySecondsCount(startSeconds.toString().padStart(2,"0"));
     setDisplayRounds(rounds);
     setCounter(totalSeconds.current);
     if (secondsCountInterval.current) {
@@ -157,24 +159,23 @@ const handleStartButton = (value) => {
 
 return (
     <div>
-        <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
-        <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
-        <div>
-            Rounds: <TimerInput value={rounds} onChange={handleRoundsInput}/>
-        </div>
-            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
-        <div>
-        <DisplayRounds round={displayRounds} totalRounds={rounds} />
-           
+        <Panel type="XY">
+            <TimerInput value={startMinutes} onChange={handleMinutesInput}/>:
+            <TimerInput value={startSeconds} onChange={handleSecondsInput}/>
             <div>
-                Rounds: {displayRounds}
+                <DisplayTitle title="Rounds" />
+                <TimerInput value={rounds} onChange={handleRoundsInput}/>
             </div>
-            {/* COLOR DOES NOT WORK  */}
-            <Button value={"Start"} color={'#00cccc'} onClick={handleStartButton} /> 
-            <Button value={"Stop"} color={'#00cccc'} onClick={handleStopButton} />   
-            <Button value={"Reset"} color={'#00cccc'} onClick={handleResetButton} />   
-            <Button value={"End"} color={'#00cccc'} onClick={handleEndButton} />                  
-        </div>
+            
+            <DisplayRounds round={displayRounds} totalRounds={rounds} />
+            <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
+            
+            <Button value={"Start"} color="#aaa0ff"  onClick={handleStartButton} /> 
+            <Button value={"Stop"} color="#aaa0ff"  onClick={handleStopButton} />   
+            <Button value={"Reset"} color="#aaa0ff"  onClick={handleResetButton} />   
+            <Button value={"End"} color="#aaa0ff"  onClick={handleEndButton} />                  
+        
+        </Panel>
     </div>
 
     );

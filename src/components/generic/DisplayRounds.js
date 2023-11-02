@@ -2,7 +2,10 @@ import React from "react";
 
 const DisplayRounds = ({round, totalRounds}) => {
     return(
-        <div>
+        <div style={{
+            fontSize: "1rem",
+            marginRight: 5,
+        }}>
             Round: {round} of {totalRounds}
         </div>
     );
