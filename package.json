@@ -1,5 +1,6 @@
 {
   "name": "assignment-1",
+  "homepage": "https://prof-tejera.github.io/assignment-1-jbhammett"
   "version": "1.0.0",
   "dependencies": {
     "react": "^18.2.0",
