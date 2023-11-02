@@ -7,7 +7,7 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
-import { CalculateTotalSeconds, HandleStopButton } from "../../utils/helpers";
+import { CalculateTotalSeconds, HandleStopButton, HandleCountdownMinuteChange } from "../../utils/helpers";
 
 
 const XY = () => {
@@ -97,26 +97,8 @@ const handleStartButton = (value) => {
                 }
         
                 // Handle change to next minute
-                if (nextTotalSecondsCounter % 60 === 59){
-                    setDisplayMinutesCount((prevDisplayMinutesCount) => {
-                        if(prevDisplayMinutesCount > 0){
-                            let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) - 1;
-                            nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
-                            return nextDisplayMinutesCount;
-                        }
-                        else {
-                            return '00';        
-                        }
-                    });
-                
-                    setDisplaySecondsCount('59');
+                HandleCountdownMinuteChange(nextTotalSecondsCounter, setDisplayMinutesCount, setDisplaySecondsCount);
 
-                }
-                else{                    
-                    let nextTotalSeconds = nextTotalSecondsCounter % 60;
-                    setDisplaySecondsCount(nextTotalSeconds.toString().padStart(2,"0"));
-                    
-                }
                 return nextTotalSecondsCounter;
             })();
         

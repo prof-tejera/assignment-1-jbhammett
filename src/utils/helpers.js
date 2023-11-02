@@ -23,6 +23,31 @@ export const HandleStopButton = ((interval, start) => {
 
 
 
+export const HandleCountdownMinuteChange = ((nextTotalSecondsCounter, setDisplayMinutesCount, setDisplaySecondsCount) => {
+    if (nextTotalSecondsCounter % 60 === 59){
+        setDisplayMinutesCount((prevDisplayMinutesCount) => {
+            if(prevDisplayMinutesCount > 0){
+                let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) - 1;
+                nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
+                return nextDisplayMinutesCount;
+            }
+            else {
+                return '00';        
+            }
+        });
+        
+    
+    setDisplaySecondsCount('59');
+    }
+    else{                    
+                        let nextTotalSeconds = nextTotalSecondsCounter % 60;
+                        setDisplaySecondsCount(nextTotalSeconds.toString().padStart(2,"0"));
+                        
+                    }
+    
+    
+    });
+
 
 
 

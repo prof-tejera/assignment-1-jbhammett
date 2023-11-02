@@ -7,7 +7,7 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
-import { CalculateTotalSeconds, HandleStopButton } from "../../utils/helpers";
+import { CalculateTotalSeconds, HandleStopButton, HandleCountdownMinuteChange } from "../../utils/helpers";
 
 
 const Tabata = () => {
@@ -109,26 +109,8 @@ const Tabata = () => {
                         }
             
                         // Handle change to next minute
-                        if (nextTotalSecondsCounter % 60 === 59){
-                            
-                                setDisplayMinutesCount((prevDisplayMinutesCount) => {
-                                    if(prevDisplayMinutesCount > 0){
-                                        let nextDisplayMinutesCount = parseInt(prevDisplayMinutesCount) - 1;
-                                        nextDisplayMinutesCount = nextDisplayMinutesCount.toString().padStart(2,"0");
-                                        return nextDisplayMinutesCount;
-                                    }
-                                    else {
-                                        return '00';       
-                                    }
-                                });
-                                setDisplaySecondsCount('59');
-            
-                        }
-                        else{                    
-                            let nextTotalSeconds = nextTotalSecondsCounter % 60;
-                            setDisplaySecondsCount(nextTotalSeconds.toString().padStart(2,"0"));
-                            
-                        }
+                        HandleCountdownMinuteChange(nextTotalSecondsCounter, setDisplayMinutesCount, setDisplaySecondsCount);
+
                         // Stop work timer so rest timer can start
                         if (counter.current === 0){
                             work.current = false;
@@ -182,27 +164,9 @@ const Tabata = () => {
                             });   
                         }
 
-                        // Handle minute change
-                        if (nextRestSecondsCounter % 60 === 59){
-                            
-                            setDisplayRestMinutes((prevDisplayRestMinutes) => {
-                                if(prevDisplayRestMinutes > 0){
-                                    let nextDisplayRestMinutes = parseInt(prevDisplayRestMinutes) - 1;
-                                    nextDisplayRestMinutes = nextDisplayRestMinutes.toString().padStart(2,"0");
-                                    return nextDisplayRestMinutes;
-                                }
-                                else {
-                                    return '00';       
-                                }
-                            });
-                            setDisplayRestSeconds('59');
-        
-                    }
-                    else{                    
-                        let nextTotalRestSeconds = nextRestSecondsCounter % 60;
-                        setDisplayRestSeconds(nextTotalRestSeconds.toString().padStart(2,"0"));
-                        
-                    }
+                    // Handle minute change
+                    HandleCountdownMinuteChange(nextRestSecondsCounter, setDisplayRestMinutes, setDisplayRestSeconds);
+
                     
                     return nextRestSecondsCounter;
 
