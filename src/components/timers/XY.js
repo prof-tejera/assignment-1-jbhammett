@@ -32,7 +32,7 @@ const handleMinutesInput = v => {
 
 const handleSecondsInput = v => {
     setStartSeconds(v);
-    setDisplaySecondsCount(v);
+    setDisplaySecondsCount(v.toString().padStart(2,"0"));
 };
 
 const handleRoundsInput = v => {
@@ -42,14 +42,18 @@ const handleRoundsInput = v => {
 
 
 const handleStartButton = (value) => {
-    let format_minutes_input = startMinutes.toString().padStart(2,"0");
-    let format_seconds_input = startSeconds.toString().padStart(2,"0");  
-    handleMinutesInput(format_minutes_input);
-    handleSecondsInput(format_seconds_input);  
-
     let seconds = CalculateTotalSeconds(startMinutes, startSeconds);
-    counter.current = seconds;
 
+    //Format input value to time format and set inital total seconds count
+    const totalDisplaySeconds = CalculateTotalSeconds(displayMinutesCount, displaySecondsCount);
+
+    if (totalDisplaySeconds === seconds){
+        let format_minutes_input = startMinutes.toString().padStart(2,"0");
+        let format_seconds_input = startSeconds.toString().padStart(2,"0");  
+        handleMinutesInput(format_minutes_input);
+        handleSecondsInput(format_seconds_input);  
+        counter.current = seconds;
+    }
 
     totalSeconds.current = seconds;
 
@@ -171,7 +175,7 @@ return (
             <DisplayTime minutes={displayMinutesCount} seconds={displaySecondsCount}/>
             
             <Button value={"Start"} color="#aaa0ff"  onClick={handleStartButton} /> 
-            <Button value={"Stop"} color="#aaa0ff"  onClick={handleStopButton} />   
+            <Button value={"Pause/Resume"} color="#aaa0ff"  onClick={handleStopButton} />   
             <Button value={"Reset"} color="#aaa0ff"  onClick={handleResetButton} />   
             <Button value={"End"} color="#aaa0ff"  onClick={handleEndButton} />                  
         

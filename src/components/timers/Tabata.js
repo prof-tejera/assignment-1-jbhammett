@@ -60,28 +60,34 @@ const Tabata = () => {
     
     
     const handleStartButton = (value) => {
-        let format_minutes_input = startMinutes.toString().padStart(2,"0");
-        let format_seconds_input = startSeconds.toString().padStart(2,"0");
-        handleMinutesInput(format_minutes_input);
-        handleSecondsInput(format_seconds_input);
-
-        let format_rest_minutes_input = startRestMinutes.toString().padStart(2,"0");
-        let format_rest_seconds_input = startRestSeconds.toString().padStart(2,"0");
-        handleRestMinutesInput(format_rest_minutes_input);
-        handleRestSecondsInput(format_rest_seconds_input);
-
-         
+        
         let workSeconds = CalculateTotalSeconds(startMinutes, startSeconds);
         
-        
-        counter.current = workSeconds;
-
         totalSeconds.current = workSeconds;
 
         let restSeconds = CalculateTotalSeconds(startRestMinutes, startRestSeconds);
         totalRestSeconds.current = restSeconds;
 
-        restCounter.current = restSeconds;
+
+        const totalDisplaySeconds = CalculateTotalSeconds(displayMinutesCount, displaySecondsCount);
+        if (totalDisplaySeconds === workSeconds){
+            let format_minutes_input = startMinutes.toString().padStart(2,"0");
+            let format_seconds_input = startSeconds.toString().padStart(2,"0");
+            handleMinutesInput(format_minutes_input);
+            handleSecondsInput(format_seconds_input);
+         
+            counter.current = workSeconds;
+        }
+
+        if (parseInt(displayRestMinutes) * 60 + parseInt(displayRestSeconds) === restSeconds){
+            let format_rest_minutes_input = startRestMinutes.toString().padStart(2,"0");
+            let format_rest_seconds_input = startRestSeconds.toString().padStart(2,"0");
+            handleRestMinutesInput(format_rest_minutes_input);
+            handleRestSecondsInput(format_rest_seconds_input);
+
+            restCounter.current = restSeconds;
+        }
+
 
 
         if (totalSeconds.current > 0 && rounds > 0){
@@ -294,7 +300,7 @@ const Tabata = () => {
                 <DisplayRounds round={displayRounds} totalRounds={rounds} />
 
                 <Button value={"Start"} color="#aaa0ff"  onClick={handleStartButton} /> 
-                <Button value={"Stop"} color="#aaa0ff"  onClick={handleStopButton} />   
+                <Button value={"Pause/Resume"} color="#aaa0ff"  onClick={handleStopButton} />   
                 <Button value={"Reset"} color="#aaa0ff"  onClick={handleResetButton} />   
                 <Button value={"End"} color="#aaa0ff" onClick={handleEndButton} />                  
            
